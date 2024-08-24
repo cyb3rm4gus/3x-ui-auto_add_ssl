@@ -63,7 +63,14 @@ install_openssl() {
     fi
 }
 
-openssl req -x509 -newkey rsa:4096 -nodes -sha256 -keyout /etc/ssl/private/private.key -out /etc/ssl/certs/public.key -days 3650 -subj "/CN=APP"
+
+check_if_ssl_present() {
+    local ssl_detected=$(grep -a 'webCertFile' "$DB_PATH")
+    if [ -n "$ssl_detected" ]; then  # Check if the variable is non-empty
+        echo "SSL cert detected in settings, exiting"
+        exit 0
+    fi
+}
 
 # Function to get the last ID in the settings table
 get_last_id() {
@@ -79,8 +86,14 @@ execute_sql_inserts() {
     echo "SQL inserts executed with IDs $next_id and $second_id."
 }
 
+gen_ssl_cert() {
+    openssl req -x509 -newkey rsa:4096 -nodes -sha256 -keyout /etc/ssl/private/private.key -out /etc/ssl/certs/public.key -days 3650 -subj "/CN=APP"
+}
+
 # Main script execution
 check_sqlite3
+check_if_ssl_present
 check_openssl
+gen_ssl_cert
 get_last_id
 execute_sql_inserts
