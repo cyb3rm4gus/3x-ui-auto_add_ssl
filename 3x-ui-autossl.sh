@@ -3,8 +3,8 @@
 # Define the database path and the SQL statements template (to be modified based on last ID)
 DB_PATH="/etc/x-ui/x-ui.db"
 SQL_INSERT_TEMPLATE="
-INSERT INTO settings VALUES (%d, 'webCertFile', '/etc/ssl/certs/public.key');
-INSERT INTO settings VALUES (%d, 'webKeyFile', '/etc/ssl/private/private.key');
+INSERT INTO settings VALUES (%d, 'webCertFile', '/etc/ssl/certs/3x-ui-public.key');
+INSERT INTO settings VALUES (%d, 'webKeyFile', '/etc/ssl/private/3x-ui-private.key');
 "
 
 # Function to check if sqlite3 is installed
@@ -87,7 +87,7 @@ execute_sql_inserts() {
 }
 
 gen_ssl_cert() {
-    openssl req -x509 -newkey rsa:4096 -nodes -sha256 -keyout /etc/ssl/private/private.key -out /etc/ssl/certs/public.key -days 3650 -subj "/CN=APP"
+    openssl req -x509 -newkey rsa:4096 -nodes -sha256 -keyout /etc/ssl/private/3x-ui-private.key -out /etc/ssl/certs/3x-ui-public.key -days 3650 -subj "/CN=APP"
 }
 
 # Main script execution
