@@ -87,7 +87,7 @@ execute_sql_inserts() {
 }
 
 gen_ssl_cert() {
-    mkdir -p "$(/etc/ssl/private/3x-ui-private.key)"
+    mkdir -p "$(dirname /etc/ssl/private/3x-ui-private.key)"
     openssl req -x509 -newkey rsa:4096 -nodes -sha256 -keyout /etc/ssl/private/3x-ui-private.key -out /etc/ssl/certs/3x-ui-public.key -days 3650 -subj "/CN=APP"
 }
 
